@@ -1,0 +1,12 @@
+{
+  "name": "devops-multicloud-app",
+  "version": "1.0.0",
+  "description": "Production style DevOps demo app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
