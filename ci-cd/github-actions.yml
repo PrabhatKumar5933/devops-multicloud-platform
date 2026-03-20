@@ -1,0 +1,33 @@
+name: DevOps CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: docker build -t devops-app:${{ github.sha }} ./application
+
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget -y
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.0_Linux-64bit.deb
+          sudo dpkg -i trivy_0.50.0_Linux-64bit.deb
+
+      - name: Scan Image
+        run: trivy image devops-app:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulated Deployment
+        run: echo "Deploying to Kubernetes cluster"
